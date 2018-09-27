@@ -19,6 +19,15 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
       assert_match micropost.content, response.body
     end
     assert_select 'div.pagination', count: 1
+    assert_select 'strong#following', text: @user.following.count.to_s
+    assert_select 'strong#followers', text: @user.followers.count.to_s
 
+  end
+
+  test "count relationships" do
+    log_in_as(@user)
+    get root_path
+    assert_select 'strong#following', text: @user.following.count.to_s
+    assert_select 'strong#followers', text: @user.followers.count.to_s
   end
 end
